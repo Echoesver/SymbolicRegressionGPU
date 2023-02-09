@@ -145,6 +145,6 @@ int main() {
 #### 4. Compile and Run
 
 ```shell
-nvcc -o sr main.cu src/*.cu
+nvcc -o sr run_cusr.cu src/*.cu
 ./sr
 ```
