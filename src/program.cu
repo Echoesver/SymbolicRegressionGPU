@@ -184,9 +184,65 @@ namespace cusr {
         }
 
         void predict_cpu(Program *program, const vector<vector<float>> &dataset, int data_size, metric_t metric,
-                    vector<float> &prediction) {
-                        //TODO
+                         vector<float> &prediction) {
+            // TODO: check prediction.size()==dataset.size()
+            auto *stack = new float[program->depth + 1];
+
+            for (int row = 0; row < data_size; row++) {
+                int top = 0;
+                for (int i = program->length - 1; i >= 0; i--) {
+                    auto &node = program->prefix[i];
+                    if (node.node_type == NodeType::CONST) {
+                        stack[top++] = node.constant;
+                    } else if (node.node_type == NodeType::VAR) {
+                        stack[top++] = dataset[row][node.variable];
+                    } else if (node.node_type == NodeType::UFUNC) {
+                        float var1 = stack[--top];
+                        if (node.function == Function::SIN) {
+                            stack[top++] = std::sin(var1);
+                        } else if (node.function == Function::COS) {
+                            stack[top++] = std::cos(var1);
+                        } else if (node.function == Function::TAN) {
+                            stack[top++] = std::tan(var1);
+                        } else if (node.function == Function::LOG) {
+                            if (var1 <= 0) {
+                                stack[top++] = -1.0f;
+                            } else {
+                                stack[top++] = std::log(var1);
+                            }
+                        } else if (node.function == Function::INV) {
+                            if (var1 == 0) {
+                                var1 = DELTA;
+                            }
+                            stack[top++] = 1.0f / var1;
+                        }
+                    } else {
+                        float var1 = stack[--top];
+                        float var2 = stack[--top];
+                        if (node.function == Function::ADD) {
+                            stack[top++] = var1 + var2;
+                        } else if (node.function == Function::SUB) {
+                            stack[top++] = var1 - var2;
+                        } else if (node.function == Function::MUL) {
+                            stack[top++] = var1 * var2;
+                        } else if (node.function == Function::DIV) {
+                            if (var2 == 0) {
+                                var2 = DELTA;
+                            }
+                            stack[top++] = var1 / var2;
+                        } else if (node.function == Function::MAX) {
+                            stack[top++] = var1 >= var2 ? var1 : var2;
+                        } else if (node.function == Function::MIN) {
+                            stack[top++] = var1 <= var2 ? var1 : var2;
+                        }
                     }
+                }
+
+                prediction[row] = stack[top - 1];
+            }
+
+            delete[] stack;
+        }
 
         int tournament_selection_cpu(vector<Program> &population, int tournament_size, float parsimony_coefficient) {
             int size = population.size();
