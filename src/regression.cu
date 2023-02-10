@@ -194,14 +194,14 @@ namespace cusr {
         this->best_program_in_each_gen.emplace_back(this->best_program);
     }
 
-    void RegressionEngine::fit(vector<vector<float>> &dataset, vector<float> &label, string metric) {
+    void RegressionEngine::fit(vector<vector<float>> &dataset, vector<float> &label, string corr) {
 
         fit(dataset, label);
 
         // argsort all programs by their fitnesses
         vector<int> indices(population_size);
         iota(indices.begin(), indices.end(), 0);
-        sort(indices.begin(), indices.end(),
+        partial_sort(indices.begin(), indices.begin()+n_hall_of_fame, indices.end(),
         [this](int i, int j) { return this->population[i].fitness < this->population[j].fitness; });
 
         // TODO: calculate predictions of hall_of_fame programs(from best to worst)
@@ -221,8 +221,9 @@ namespace cusr {
             }
         }
         
-        // TODO: select top n_components most uncorrelated programs from
+        // select top n_components most uncorrelated programs from
         // population[indices[0]] ... population[indices[n_hall_of_fame-1]]
+        // by iteratively excluding the worse program (the larger index j) of a most correlated pair of programs
         unordered_set<int> excluded;
         int to_exclude;
         float max_corr;
@@ -243,13 +244,13 @@ namespace cusr {
             excluded.insert(to_exclude);
         }
 
-        // save top n_components programs to components
+        // save top n_components most uncorrelated programs to components
         for(int i=0; i<n_hall_of_fame; i++) {
             if(excluded.find(i)==excluded.end()) components.emplace_back(population[indices[i]]);
         }
     }
 
-    void transform(vector<vector<float>> &dataset, vector<vector<float>> &new_dataset) {
+    void RegressionEngine::transform(vector<vector<float>> &dataset, vector<vector<float>> &new_dataset) {
         // TODO: check dataset.size()==new_dataset.size() and dataset.size() + n_components == new_dataset.size()
     }
 

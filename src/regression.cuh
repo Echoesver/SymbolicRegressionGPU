@@ -181,12 +181,12 @@ namespace cusr {
          * 
          * @param dataset
          * @param label
-         * @param metric 'pearson' or 'spearman'
+         * @param corr 'pearson' or 'spearman'
          */
-        void fit(vector<vector<float>> &dataset, vector<float> &label, string metric);
+        void fit(vector<vector<float>> &dataset, vector<float> &label, string corr);
 
         /**
-         * transform input dataset an generate n_components new features
+         * transform input dataset and generate n_components new features
          */
         void transform(vector<vector<float>> &dataset, vector<vector<float>> &new_dataset);
 
