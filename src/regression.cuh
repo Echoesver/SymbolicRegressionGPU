@@ -1,7 +1,9 @@
 #ifndef LUMINOCUGP_REGRESSION_CUH
 #define LUMINOCUGP_REGRESSION_CUH
 
+#include <algorithm>
 #include <sstream>
+#include <unordered_set>
 #include <utility>
 #include "program.cuh"
 #include "fit_eval.cuh"
@@ -145,7 +147,7 @@ namespace cusr {
         // float predict(vector<float> dataset);
 
         /**
-         * the best program with the best fitness in each gen
+         * the best program with the best fitness in the last gen
          */
         Program best_program;
 
@@ -158,6 +160,35 @@ namespace cusr {
          * iteration time
          */
         float regress_time_in_sec;
+
+        /**
+         * n_hall_of_fame
+         */
+        int n_hall_of_fame = 100;
+
+        /**
+         * n_components
+         */
+        int n_components = 10;
+
+        /**
+         * list of n_components number of programs for the symbolic transformer
+         */
+        vector<Program> components;
+
+        /**
+         * fit and train a symbolic transformer
+         * 
+         * @param dataset
+         * @param label
+         * @param metric 'pearson' or 'spearman'
+         */
+        void fit(vector<vector<float>> &dataset, vector<float> &label, string metric);
+
+        /**
+         * transform input dataset an generate n_components new features
+         */
+        void transform(vector<vector<float>> &dataset, vector<vector<float>> &new_dataset);
 
     private:
 

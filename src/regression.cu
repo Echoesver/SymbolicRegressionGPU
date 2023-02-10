@@ -194,6 +194,65 @@ namespace cusr {
         this->best_program_in_each_gen.emplace_back(this->best_program);
     }
 
+    void RegressionEngine::fit(vector<vector<float>> &dataset, vector<float> &label, string metric) {
+
+        fit(dataset, label);
+
+        // argsort all programs by their fitnesses
+        vector<int> indices(population_size);
+        iota(indices.begin(), indices.end(), 0);
+        sort(indices.begin(), indices.end(),
+        [this](int i, int j) { return this->population[i].fitness < this->population[j].fitness; });
+
+        // TODO: calculate predictions of hall_of_fame programs(from best to worst)
+        // TODO: check if use gpu or cpu to calculate
+        vector<vector<float>> predictions(population_size, vector<float>(dataset.size()));
+        for(int i=0; i<n_hall_of_fame; i++) {
+            predict_cpu(&population[indices[i]], dataset, dataset.size(), this->metric, predictions[i]);
+        }
+
+        // TODO: calculate correlations between hall_of_fame programs(may add new metrics in the future, design the
+        // code structure such that is easy to maintain!)
+        // TODO: check metric type 'pearson' or 'spearman'
+        vector<vector<float>> corr_matrix(n_hall_of_fame, vector<float>(n_hall_of_fame));
+        for(int i=0; i<n_hall_of_fame-1; i++) {
+            for(int j=i+1; j<n_hall_of_fame; j++) {
+                corr_matrix[i][j] = i+j;// abs(cal_corr(predictions[indices[i]], predictions[indices[j]]));
+            }
+        }
+        
+        // TODO: select top n_components most uncorrelated programs from
+        // population[indices[0]] ... population[indices[n_hall_of_fame-1]]
+        unordered_set<int> excluded;
+        int to_exclude;
+        float max_corr;
+        while(n_hall_of_fame - excluded.size() > n_components) {
+            to_exclude = 0;
+            max_corr = 0.0;
+            for(int i=0; i<n_hall_of_fame-1; i++) {
+                if(excluded.find(i) != excluded.end()) continue;
+                for(int j=i+1; j<n_hall_of_fame; j++) {
+                    if(excluded.find(j) != excluded.end()) continue;
+                    if(corr_matrix[i][j] > max_corr) {
+                        max_corr = corr_matrix[i][j];
+                        to_exclude = j;
+                    }
+                    else if(corr_matrix[i][j] == max_corr && j > to_exclude) to_exclude = j; 
+                }
+            }
+            excluded.insert(to_exclude);
+        }
+
+        // save top n_components programs to components
+        for(int i=0; i<n_hall_of_fame; i++) {
+            if(excluded.find(i)==excluded.end()) components.emplace_back(population[indices[i]]);
+        }
+    }
+
+    void transform(vector<vector<float>> &dataset, vector<vector<float>> &new_dataset) {
+        // TODO: check dataset.size()==new_dataset.size() and dataset.size() + n_components == new_dataset.size()
+    }
+
     void RegressionEngine::calculate_population_fitness_cpu() {
         for (int i = 0; i < population_size; i++) {
             calculate_fitness_cpu(&population[i], dataset, label, dataset.size(), this->metric);

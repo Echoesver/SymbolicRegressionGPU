@@ -87,12 +87,24 @@ namespace cusr {
          * @param dataset
          * @param real_value
          * @param data_size
-         * @param parsimony_coefficient
+         * @param metric
          */
         void
         calculate_fitness_cpu(Program *program, const vector<vector<float>> &dataset, const vector<float> &real_value,
                               int data_size,
                               metric_t metric);
+
+        /**
+         * calculate output for a single program on the CPU
+         *
+         * @param program
+         * @param dataset
+         * @param data_size
+         * @param metric
+         * @param prediction
+         */
+        void predict_cpu(Program *program, const vector<vector<float>> &dataset, int data_size, metric_t metric,
+                    vector<float> &prediction);
 
         /**
          * tournament selection performed on the CPU

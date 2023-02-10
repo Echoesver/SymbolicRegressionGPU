@@ -183,6 +183,11 @@ namespace cusr {
             }
         }
 
+        void predict_cpu(Program *program, const vector<vector<float>> &dataset, int data_size, metric_t metric,
+                    vector<float> &prediction) {
+                        //TODO
+                    }
+
         int tournament_selection_cpu(vector<Program> &population, int tournament_size, float parsimony_coefficient) {
             int size = population.size();
             int best_index = gen_rand_int(0, size - 1);
