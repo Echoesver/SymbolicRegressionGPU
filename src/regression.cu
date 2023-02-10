@@ -56,6 +56,16 @@ namespace cusr {
 
         this->variable_nums = dataset[0].size();
 
+        if(this->n_hall_of_fame > this->population_size) {
+            this->n_hall_of_fame = this->population_size;
+            cout << "automatically change n_hall_of_fame = " << this->n_hall_of_fame << endl;
+        }
+
+        if(this->n_components > n_hall_of_fame) {
+            this->n_components = this->n_hall_of_fame;
+            cout << "automatically change n_components = " << this->n_components << endl;
+        }
+
         if (use_gpu) {
             do_gpu_init();
         }
@@ -204,20 +214,20 @@ namespace cusr {
         partial_sort(indices.begin(), indices.begin()+n_hall_of_fame, indices.end(),
         [this](int i, int j) { return this->population[i].fitness < this->population[j].fitness; });
 
-        // TODO: calculate predictions of hall_of_fame programs(from best to worst)
-        // TODO: check if use gpu or cpu to calculate
+        // calculate predictions of hall_of_fame programs(from best to worst)
+        // TODO: implement predict_gpu() and check whether use gpu or cpu to calculate
         vector<vector<float>> predictions(population_size, vector<float>(dataset.size()));
         for(int i=0; i<n_hall_of_fame; i++) {
             predict_cpu(&population[indices[i]], dataset, dataset.size(), this->metric, predictions[i]);
         }
 
-        // TODO: calculate correlations between hall_of_fame programs(may add new metrics in the future, design the
+        // calculate correlations between hall_of_fame programs(may add new metrics in the future, design the
         // code structure such that is easy to maintain!)
         // TODO: check metric type 'pearson' or 'spearman'
         vector<vector<float>> corr_matrix(n_hall_of_fame, vector<float>(n_hall_of_fame));
         for(int i=0; i<n_hall_of_fame-1; i++) {
             for(int j=i+1; j<n_hall_of_fame; j++) {
-                corr_matrix[i][j] = i+j;// abs(cal_corr(predictions[indices[i]], predictions[indices[j]]));
+                corr_matrix[i][j] = abs(pearson_corr_coeff(predictions[indices[i]], predictions[indices[j]]));
             }
         }
         
@@ -271,5 +281,34 @@ namespace cusr {
 
     RegressionEngine::~RegressionEngine() {
         freeDataSetAndLabel(&this->device_dataset);
+    }
+
+    float standard_deviation(const std::vector<float> &x) {
+        // TODO: check x.size() > 1
+        float mean_value = accumulate(x.begin(), x.end(), 0.0) / x.size();
+        float sum_squared_deviation = 0;
+        for (auto &value : x) {
+            sum_squared_deviation += (value - mean_value) * (value - mean_value);
+        }
+        return sqrt(sum_squared_deviation / (x.size() - 1));
+    }
+
+    float pearson_corr_coeff(const vector<float> &x, const vector<float> &y) {
+        // TODO: check x.size() == y.size() > 1
+
+        float mean_x = accumulate(x.begin(), x.end(), 0.0) / x.size();
+        float mean_y = accumulate(y.begin(), y.end(), 0.0) / y.size();
+
+        float sum_product_deviation = 0;
+        for (int i = 0; i < x.size(); i++) {
+            sum_product_deviation += (x[i] - mean_x) * (y[i] - mean_y);
+        }
+
+        if(sum_product_deviation == 0) return 0;
+
+        float std_x = standard_deviation(x);
+        float std_y = standard_deviation(y);
+
+        return sum_product_deviation / (x.size() - 1) / std_x / std_y;
     }
 }

@@ -217,5 +217,20 @@ namespace cusr {
 
         void calculate_population_fitness_gpu();
     };
+
+    /**
+     * calculate standard deviation of a vector
+     * 
+     * @param x
+     */
+    float standard_deviation(const std::vector<float> &x);
+
+    /**
+     * calculate pearson correlation coefficient of two vectors
+     * 
+     * @param x
+     * @param y
+     */
+    float pearson_corr_coeff(const vector<float> &x, const vector<float> &y);
 }
 #endif //LUMINOCUGP_REGRESSION_CUH
