@@ -58,12 +58,12 @@ namespace cusr {
 
         if(this->n_hall_of_fame > this->population_size) {
             this->n_hall_of_fame = this->population_size;
-            cout << "automatically change n_hall_of_fame = " << this->n_hall_of_fame << endl;
+            cout << "automatically set n_hall_of_fame = " << this->n_hall_of_fame << endl;
         }
 
         if(this->n_components > n_hall_of_fame) {
             this->n_components = this->n_hall_of_fame;
-            cout << "automatically change n_components = " << this->n_components << endl;
+            cout << "automatically set n_components = " << this->n_components << endl;
         }
 
         if (use_gpu) {
