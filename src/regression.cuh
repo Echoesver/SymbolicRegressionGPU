@@ -219,18 +219,11 @@ namespace cusr {
     };
 
     /**
-     * calculate standard deviation of a vector
+     * calculate correlation matrix of n vectors
      * 
-     * @param x
+     * @param data 
+     * @param corr_matrix
      */
-    float standard_deviation(const std::vector<float> &x);
-
-    /**
-     * calculate pearson correlation coefficient of two vectors
-     * 
-     * @param x
-     * @param y
-     */
-    float pearson_corr_coeff(const vector<float> &x, const vector<float> &y);
+    void cal_corr_matrix(const vector<vector<float>> &data, vector<vector<float>> &corr_matrix);
 }
 #endif //LUMINOCUGP_REGRESSION_CUH

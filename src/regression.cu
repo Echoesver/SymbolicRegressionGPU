@@ -208,28 +208,32 @@ namespace cusr {
 
         fit(dataset, label);
 
+        clock_t time1 = clock();
+
         // argsort all programs by their fitnesses
         vector<int> indices(population_size);
         iota(indices.begin(), indices.end(), 0);
         partial_sort(indices.begin(), indices.begin()+n_hall_of_fame, indices.end(),
         [this](int i, int j) { return this->population[i].fitness < this->population[j].fitness; });
 
+        clock_t time2 = clock();
+
         // calculate predictions of hall_of_fame programs(from best to worst)
         // TODO: implement predict_gpu() and check whether use gpu or cpu to calculate
-        vector<vector<float>> predictions(population_size, vector<float>(dataset.size()));
+        vector<vector<float>> predictions(n_hall_of_fame, vector<float>(dataset.size()));
         for(int i=0; i<n_hall_of_fame; i++) {
             predict_cpu(&population[indices[i]], dataset, dataset.size(), this->metric, predictions[i]);
         }
+
+        clock_t time3 = clock();
 
         // calculate correlations between hall_of_fame programs(may add new metrics in the future, design the
         // code structure such that is easy to maintain!)
         // TODO: check metric type 'pearson' or 'spearman'
         vector<vector<float>> corr_matrix(n_hall_of_fame, vector<float>(n_hall_of_fame));
-        for(int i=0; i<n_hall_of_fame-1; i++) {
-            for(int j=i+1; j<n_hall_of_fame; j++) {
-                corr_matrix[i][j] = abs(pearson_corr_coeff(predictions[indices[i]], predictions[indices[j]]));
-            }
-        }
+        cal_corr_matrix(predictions, corr_matrix);
+
+        clock_t time4 = clock();
         
         // select top n_components most uncorrelated programs from
         // population[indices[0]] ... population[indices[n_hall_of_fame-1]]
@@ -254,10 +258,20 @@ namespace cusr {
             excluded.insert(to_exclude);
         }
 
+        clock_t time5 = clock();
+
         // save top n_components most uncorrelated programs to components
         for(int i=0; i<n_hall_of_fame; i++) {
             if(excluded.find(i)==excluded.end()) components.emplace_back(population[indices[i]]);
         }
+
+        clock_t time6 = clock();
+        cout << "> iteration time1: " << (float) (time2 - time1) / (float) CLOCKS_PER_SEC << "s" << endl;
+        cout << "> iteration time2: " << (float) (time3 - time2) / (float) CLOCKS_PER_SEC << "s" << endl;
+        cout << "> iteration time3: " << (float) (time4 - time3) / (float) CLOCKS_PER_SEC << "s" << endl;
+        cout << "> iteration time4: " << (float) (time5 - time4) / (float) CLOCKS_PER_SEC << "s" << endl;
+        cout << "> iteration time5: " << (float) (time6 - time5) / (float) CLOCKS_PER_SEC << "s" << endl;
+
     }
 
     void RegressionEngine::transform(vector<vector<float>> &dataset, vector<vector<float>> &new_dataset) {
@@ -283,32 +297,35 @@ namespace cusr {
         freeDataSetAndLabel(&this->device_dataset);
     }
 
-    float standard_deviation(const std::vector<float> &x) {
-        // TODO: check x.size() > 1
-        float mean_value = accumulate(x.begin(), x.end(), 0.0) / x.size();
-        float sum_squared_deviation = 0;
-        for (auto &value : x) {
-            sum_squared_deviation += (value - mean_value) * (value - mean_value);
-        }
-        return sqrt(sum_squared_deviation / (x.size() - 1));
-    }
+    void cal_corr_matrix(const vector<vector<float>> &data, vector<vector<float>> &corr_matrix) {
+        // TODO: check corr_matrix.size() == corr_matrix[0].size() == data.size()
 
-    float pearson_corr_coeff(const vector<float> &x, const vector<float> &y) {
-        // TODO: check x.size() == y.size() > 1
-
-        float mean_x = accumulate(x.begin(), x.end(), 0.0) / x.size();
-        float mean_y = accumulate(y.begin(), y.end(), 0.0) / y.size();
-
-        float sum_product_deviation = 0;
-        for (int i = 0; i < x.size(); i++) {
-            sum_product_deviation += (x[i] - mean_x) * (y[i] - mean_y);
+        int n_data = data.size();
+        int data_size = data[0].size();
+        
+        vector<float> data_mean(n_data);
+        for(int i=0; i<n_data; i++) {
+            data_mean[i] = accumulate(data[i].begin(), data[i].end(), 0.0) / (data_size - 1);
         }
 
-        if(sum_product_deviation == 0) return 0;
+        vector<vector<float>> data_sum_prod_dev(n_data, vector<float>(n_data));
+        for(int k=0; k<data_size; k++) {
+            for(int i=0; i<n_data; i++) {
+                for(int j=i; j<n_data; j++) {
+                    data_sum_prod_dev[i][j] += (data[i][k] - data_mean[i])*(data[j][k] - data_mean[j]);
+                }
+            }
+        }
+        for(int i=0; i<n_data; i++) {
+            data_sum_prod_dev[i][i] = sqrt(data_sum_prod_dev[i][i] / data_size);
+        }
 
-        float std_x = standard_deviation(x);
-        float std_y = standard_deviation(y);
-
-        return sum_product_deviation / (x.size() - 1) / std_x / std_y;
+        for(int i=0; i<n_data; i++) {
+            for(int j=i+1; j<n_data; j++) {
+                if(data_sum_prod_dev[i][j]==0) corr_matrix[i][j] = 0;
+                else corr_matrix[i][j] = 
+                            data_sum_prod_dev[i][j] / (data_size-1) / data_sum_prod_dev[i][i] / data_sum_prod_dev[j][j];
+            }
+        }
     }
 }
