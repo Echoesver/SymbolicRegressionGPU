@@ -80,7 +80,9 @@ namespace cusr {
         vector<Function> function_set = {
                 Function::ADD, Function::SUB, Function::MUL,
                 Function::DIV, Function::SIN, Function::COS,
-                Function::TAN, Function::LOG, Function::INV
+                Function::TAN, Function::LOG, Function::INV,
+                Function::EXP, Function::POW, Function::SQU,
+                Function::CUB, Function::LOG1P
         };
 
         /**

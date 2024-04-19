@@ -84,12 +84,29 @@ namespace cusr {
                         } else if (function == Function::COS) {
                             stack[S_OFF] = std::cos(var1);
                             top++;
+                        } else if (function == Function::EXP) {
+                            stack[S_OFF] = std::exp(var1);
+                            top++;
                         } else if (function == Function::TAN) {
                             stack[S_OFF] = std::tan(var1);
                             top++;
+                        } else if (function == Function::SQU) {
+                            stack[S_OFF] = var1*var1;
+                            top++;
+                        } else if (function == Function::CUB) {
+                            stack[S_OFF] = var1*var1*var1;
+                            top++;
+                        } else if (function == Function::LOG1P) {
+                            if (var1 <= -1) {
+                                stack[S_OFF] = -INFINITY;
+                                top++;
+                            } else {
+                                stack[S_OFF] = std::log(var1+1);
+                                top++;
+                            }
                         } else if (function == Function::LOG) {
                             if (var1 <= 0) {
-                                stack[S_OFF] = -1.0f;
+                                stack[S_OFF] = -INFINITY;
                                 top++;
                             } else {
                                 stack[S_OFF] = std::log(var1);
@@ -117,6 +134,24 @@ namespace cusr {
                             top++;
                         } else if (function == Function::MUL) {
                             stack[S_OFF] = var1 * var2;
+                            top++;
+                        } else if (function == Function::POW) {
+                            bool isVar2Integer = floorf(var2) == var2;
+                            if (isVar2Integer) {
+                                if (var2 < 0 && var1 == 0) {
+                                    stack[S_OFF] = -INFINITY;
+                                } else {
+                                    stack[S_OFF] = powf(var1, var2);
+                                }
+                            } else {
+                                if (var2 > 0 && var1 < 0) {
+                                    stack[S_OFF] = -INFINITY;
+                                } else if (var2 < 0 && var1 <= 0) {
+                                    stack[S_OFF] = -INFINITY;
+                                } else {
+                                    stack[S_OFF] = powf(var1, var2);
+                                }
+                            }
                             top++;
                         } else if (function == Function::DIV) {
                             if (var2 == 0) {
@@ -204,9 +239,26 @@ namespace cusr {
                         } else if (function == Function::TAN) {
                             stack[S_OFF] = std::tan(var1);
                             top++;
+                        } else if (function == Function::SQU) {
+                            stack[S_OFF] = var1*var1;
+                            top++;
+                        } else if (function == Function::CUB) {
+                            stack[S_OFF] = var1*var1*var1;
+                            top++;
+                        } else if (function == Function::LOG1P) {
+                            if (var1 <= -1) {
+                                stack[S_OFF] = -INFINITY;
+                                top++;
+                            } else {
+                                stack[S_OFF] = std::log(var1+1);
+                                top++;
+                            }
+                        } else if (function == Function::EXP) {
+                            stack[S_OFF] = std::exp(var1);
+                            top++;
                         } else if (function == Function::LOG) {
                             if (var1 <= 0) {
-                                stack[S_OFF] = -1.0f;
+                                stack[S_OFF] = -INFINITY;
                                 top++;
                             } else {
                                 stack[S_OFF] = std::log(var1);
@@ -233,6 +285,24 @@ namespace cusr {
                             top++;
                         } else if (function == Function::MUL) {
                             stack[S_OFF] = var1 * var2;
+                            top++;
+                        } else if (function == Function::POW) {
+                            bool isVar2Integer = floorf(var2) == var2;
+                            if (isVar2Integer) {
+                                if (var2 < 0 && var1 == 0) {
+                                    stack[S_OFF] = -INFINITY;
+                                } else {
+                                    stack[S_OFF] = powf(var1, var2);
+                                }
+                            } else {
+                                if (var2 > 0 && var1 < 0) {
+                                    stack[S_OFF] = -INFINITY;
+                                } else if (var2 < 0 && var1 <= 0) {
+                                    stack[S_OFF] = -INFINITY;
+                                } else {
+                                    stack[S_OFF] = powf(var1, var2);
+                                }
+                            }
                             top++;
                         } else if (function == Function::DIV) {
                             if (var2 == 0) {

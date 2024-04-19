@@ -52,6 +52,9 @@ namespace cusr {
     }
 
     void RegressionEngine::do_fit_init() {
+        // printf("dataset size: %lu x %lu\n", dataset.size(), dataset[0].size());
+        // printf("label size: %lu\n", label.size());
+        
         assert(!dataset.empty() && dataset.size() == label.size());
 
         this->variable_nums = dataset[0].size();
