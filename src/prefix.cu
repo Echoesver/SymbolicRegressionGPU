@@ -163,7 +163,8 @@ namespace cusr {
             node.function = rand_func;
             if (rand_func == Function::ADD || rand_func == Function::SUB ||
                 rand_func == Function::MUL || rand_func == Function::DIV ||
-                rand_func == Function::MAX || rand_func == Function::MIN) {
+                rand_func == Function::MAX || rand_func == Function::MIN ||
+                rand_func == Function::POW ) {
                 node.node_type = NodeType::BFUNC;
             } else /** if (rand_func == Function::SIN || rand_func == Function::COS || rand_func == Function::TAN ||
         rand_func == Function::LOG || rand_func == Function::INV) */
@@ -269,11 +270,20 @@ namespace cusr {
                     return "tan";
 
                 case Function::LOG:
-                    return "log";
+                    return "ln";
 
                 case Function::INV:
                     return "inv";
-
+                case Function::EXP:
+                    return "exp";
+                case Function::POW:
+                    return "^";
+                case Function::SQU:
+                    return "square";
+                case Function::CUB:
+                    return "cube";
+                case Function::LOG1P:
+                    return "log1p";  
                 default:
                     return "error";
             }

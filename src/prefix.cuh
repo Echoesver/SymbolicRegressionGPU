@@ -38,7 +38,12 @@ namespace cusr {
             LOG, // arity: 1, return log a
             MAX, // arity: 2, if (a > b) { return a } return b
             MIN, // arity: 2, if (a < b) { return a } return b
-            INV  // arity: 1, if (a == 0) { a = DELTA } return 1 / a
+            INV,  // arity: 1, if (a == 0) { a = DELTA } return 1 / a
+            POW,
+            EXP,
+            SQU,
+            CUB,
+            LOG1P
         } func_t;
 
         typedef enum InitMethod {

@@ -130,11 +130,23 @@ namespace cusr {
                             stack[top++] = std::sin(var1);
                         } else if (node.function == Function::COS) {
                             stack[top++] = std::cos(var1);
+                        } else if (node.function == Function::EXP) {
+                            stack[top++] = std::exp(var1);
                         } else if (node.function == Function::TAN) {
                             stack[top++] = std::tan(var1);
+                        } else if (node.function == Function::SQU) {
+                            stack[top++] = var1*var1;
+                        } else if (node.function == Function::CUB) {
+                            stack[top++] = var1*var1*var1;
+                        } else if (node.function == Function::LOG1P) {
+                            if (var1 <= -1) {
+                                stack[top++] = -INFINITY;
+                            } else {
+                                stack[top++] = std::log(var1+1);
+                            }
                         } else if (node.function == Function::LOG) {
                             if (var1 <= 0) {
-                                stack[top++] = -1.0f;
+                                stack[top++] = -INFINITY;
                             } else {
                                 stack[top++] = std::log(var1);
                             }
@@ -151,6 +163,21 @@ namespace cusr {
                             stack[top++] = var1 + var2;
                         } else if (node.function == Function::SUB) {
                             stack[top++] = var1 - var2;
+                        } else if (node.function == Function::POW) {
+                            bool isVar2Integer = floorf(var2) == var2;
+                            if (isVar2Integer) {
+                                if (var2 < 0 && var1 == 0) {
+                                    stack[top++] = -INFINITY; // 使用-1.0f来表示结果未定义
+                                } else {
+                                    stack[top++] = powf(var1, var2);
+                                }
+                            } else {
+                                if ((var2 > 0 && var1 < 0) || (var2 < 0 && var1 <= 0)) {
+                                    stack[top++] = -INFINITY; // 对于var1是负数或者零的情况，使用-1.0f来表示结果未定义
+                                } else {
+                                    stack[top++] = powf(var1, var2);
+                                }
+                            }
                         } else if (node.function == Function::MUL) {
                             stack[top++] = var1 * var2;
                         } else if (node.function == Function::DIV) {

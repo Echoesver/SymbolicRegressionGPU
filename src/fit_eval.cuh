@@ -3,11 +3,11 @@
 
 #include <iostream>
 #include <vector>
-#include "cuda_runtime.h"
-#include "device_launch_parameters.h"
+#include "/usr/local/cuda-12.2/targets/x86_64-linux/include/cuda_runtime.h"
+#include "/usr/local/cuda-12.2/targets/x86_64-linux/include/device_launch_parameters.h"
 #include "program.cuh"
-#include <thrust/device_vector.h>
-#include <thrust/host_vector.h>
+#include </usr/local/cuda-12.2/targets/x86_64-linux/include/thrust/device_vector.h>
+#include </usr/local/cuda-12.2/targets/x86_64-linux/include/thrust/host_vector.h>
 #include <cassert>
 
 #define THREAD_PER_BLOCK 512

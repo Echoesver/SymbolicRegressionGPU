@@ -24,7 +24,8 @@ void gen_dataset() {
 int main() {
     gen_dataset();
     cusr::RegressionEngine reg;
-    reg.function_set = {ADD, COS, SUB, DIV, TAN, MUL, SIN };
+//    reg.function_set = {ADD,  SUB, MUL,DIV,  COS, TAN,SIN };
+    reg.function_set = {ADD, SUB, MUL, DIV,POW,SQU,CUB,LOG1P };
     reg.use_gpu = true;            // performing GPU acceleration -- much faster than CPU
     reg.max_program_depth = 10;    // better less than 20 --
                                    // or may cause overflow due to the limitation of the length of prefix (less than 2048)
