@@ -14,7 +14,7 @@ namespace cusr {
         static int seed_using_times = 2000;
 
         static int seed_count = seed_using_times;
-
+        static unsigned int current_seed = 0; // Keep track of the current seed
         void set_seed_using_times(int time) {
             seed_using_times = time;
         }
@@ -22,14 +22,25 @@ namespace cusr {
         void set_constant_prob(float p_const) {
             constant_prob = p_const;
         }
+        // Function to initialize the random number generator with a new seed
+        void reseed_generator(unsigned int new_seed ) {
+            if (new_seed == 0) {
+                std::random_device rd;  // Randomness device, used to generate unpredictable seeds
+                std::mt19937 gen(rd());
+                std::uniform_int_distribution<int> dis;
+                current_seed = dis(gen);
+            } else {
+                current_seed = new_seed;
+            }
+            srand(current_seed);  // Initialize the random number generator using a seed
+            seed_count = seed_using_times;
+            // cout << "Seed set to: " << current_seed << endl; //Will generate many outputs
+        }
+
 
         int gen_rand_int(int loBound, int upBound) {
             if (seed_count-- <= 0) {
-                seed_count = seed_using_times;
-                std::random_device rd;
-                std::mt19937 gen(rd());
-                std::uniform_int_distribution<int> dis(loBound, upBound);
-                srand(dis(gen));
+                reseed_generator();
             }
             int bound_width = upBound - loBound + 1;
             return rand() % bound_width + loBound;
@@ -37,11 +48,7 @@ namespace cusr {
 
         float gen_rand_float(float loBound, float upBound) {
             if (seed_count-- <= 0) {
-                seed_count = seed_using_times;
-                std::random_device rd;
-                std::mt19937 gen(rd());
-                std::uniform_int_distribution<int> dis(loBound, upBound);
-                srand(dis(gen));
+                reseed_generator();
             }
             float rd = loBound + (float) (rand()) / (float) (RAND_MAX / (upBound - loBound));
             return rd;

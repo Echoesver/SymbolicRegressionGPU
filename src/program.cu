@@ -233,7 +233,7 @@ namespace cusr {
                             stack[top++] = std::tan(var1);
                         } else if (node.function == Function::LOG) {
                             if (var1 <= 0) {
-                                stack[top++] = -1.0f;
+                                stack[top++] = -INFINITY;
                             } else {
                                 stack[top++] = std::log(var1);
                             }

@@ -68,6 +68,8 @@ namespace cusr {
          * @param upBound
          * @return
          */
+        void set_seed_using_times(int times);
+        void reseed_generator(unsigned int new_seed = 0);        
         int gen_rand_int(int loBound, int upBound);
 
         /**
