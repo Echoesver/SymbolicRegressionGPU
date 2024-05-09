@@ -54,7 +54,8 @@ namespace cusr {
     void RegressionEngine::do_fit_init() {
         // printf("dataset size: %lu x %lu\n", dataset.size(), dataset[0].size());
         // printf("label size: %lu\n", label.size());
-        
+        // Setting the random number generator seed for reproducibility
+        //cusr::program::initialize_random_engine(12345);  // Initialize with a predefined seed. If you don't want to manually specify the seed in the main program, you can enable this line of code      
         assert(!dataset.empty() && dataset.size() == label.size());
 
         this->variable_nums = dataset[0].size();

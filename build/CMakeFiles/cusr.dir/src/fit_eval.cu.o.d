@@ -1,4 +1,4 @@
-CMakeFiles/cusr.dir/src/fit_eval.cu.o : /home/jiangg/projects/machinelearning/TimeRelatedData/SymbolicRegressionGPU/src/fit_eval.cu \
+CMakeFiles/cusr.dir/src/fit_eval.cu.o : /home/jiangg/projects/machinelearning/TimeRelatedData/SymbolicRegressionGPUstaticv2/src/fit_eval.cu \
     /usr/include/stdc-predef.h \
     /usr/local/cuda-12.2/targets/x86_64-linux/include/cuda_runtime.h \
     /usr/local/cuda-12.2/targets/x86_64-linux/include/crt/host_config.h \
@@ -158,7 +158,7 @@ CMakeFiles/cusr.dir/src/fit_eval.cu.o : /home/jiangg/projects/machinelearning/Ti
     /usr/include/c++/9/bits/stl_relops.h \
     /usr/include/c++/9/bits/stl_pair.h \
     /usr/include/c++/9/initializer_list \
-    /home/jiangg/projects/machinelearning/TimeRelatedData/SymbolicRegressionGPU/src/fit_eval.cuh \
+    /home/jiangg/projects/machinelearning/TimeRelatedData/SymbolicRegressionGPUstaticv2/src/fit_eval.cuh \
     /usr/include/c++/9/iostream \
     /usr/include/c++/9/ostream \
     /usr/include/c++/9/ios \
@@ -254,8 +254,8 @@ CMakeFiles/cusr.dir/src/fit_eval.cu.o : /home/jiangg/projects/machinelearning/Ti
     /usr/include/c++/9/bits/stl_vector.h \
     /usr/include/c++/9/bits/stl_bvector.h \
     /usr/include/c++/9/bits/vector.tcc \
-    /home/jiangg/projects/machinelearning/TimeRelatedData/SymbolicRegressionGPU/src/program.cuh \
-    /home/jiangg/projects/machinelearning/TimeRelatedData/SymbolicRegressionGPU/src/prefix.cuh \
+    /home/jiangg/projects/machinelearning/TimeRelatedData/SymbolicRegressionGPUstaticv2/src/program.cuh \
+    /home/jiangg/projects/machinelearning/TimeRelatedData/SymbolicRegressionGPUstaticv2/src/prefix.cuh \
     /usr/include/c++/9/stack \
     /usr/include/c++/9/deque \
     /usr/include/c++/9/bits/stl_deque.h \

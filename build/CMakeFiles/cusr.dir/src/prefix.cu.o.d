@@ -1,4 +1,4 @@
-CMakeFiles/cusr.dir/src/prefix.cu.o : /home/jiangg/projects/machinelearning/TimeRelatedData/SymbolicRegressionGPU/src/prefix.cu \
+CMakeFiles/cusr.dir/src/prefix.cu.o : /home/jiangg/projects/machinelearning/TimeRelatedData/SymbolicRegressionGPUstaticv2/src/prefix.cu \
     /usr/include/stdc-predef.h \
     /usr/local/cuda-12.2/targets/x86_64-linux/include/cuda_runtime.h \
     /usr/local/cuda-12.2/targets/x86_64-linux/include/crt/host_config.h \
@@ -158,7 +158,7 @@ CMakeFiles/cusr.dir/src/prefix.cu.o : /home/jiangg/projects/machinelearning/Time
     /usr/include/c++/9/bits/stl_relops.h \
     /usr/include/c++/9/bits/stl_pair.h \
     /usr/include/c++/9/initializer_list \
-    /home/jiangg/projects/machinelearning/TimeRelatedData/SymbolicRegressionGPU/src/prefix.cuh \
+    /home/jiangg/projects/machinelearning/TimeRelatedData/SymbolicRegressionGPUstaticv2/src/prefix.cuh \
     /usr/include/c++/9/stack \
     /usr/include/c++/9/deque \
     /usr/include/c++/9/bits/stl_algobase.h \

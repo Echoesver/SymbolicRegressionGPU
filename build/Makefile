@@ -57,10 +57,10 @@ RM = /home/jiangg/mambaforge3/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/jiangg/projects/machinelearning/TimeRelatedData/SymbolicRegressionGPU
+CMAKE_SOURCE_DIR = /home/jiangg/projects/machinelearning/TimeRelatedData/SymbolicRegressionGPUstaticv2
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/jiangg/projects/machinelearning/TimeRelatedData/SymbolicRegressionGPU/build
+CMAKE_BINARY_DIR = /home/jiangg/projects/machinelearning/TimeRelatedData/SymbolicRegressionGPUstaticv2/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/jiangg/projects/machinelearning/TimeRelatedData/SymbolicRegressionGPU/build/CMakeFiles /home/jiangg/projects/machinelearning/TimeRelatedData/SymbolicRegressionGPU/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jiangg/projects/machinelearning/TimeRelatedData/SymbolicRegressionGPUstaticv2/build/CMakeFiles /home/jiangg/projects/machinelearning/TimeRelatedData/SymbolicRegressionGPUstaticv2/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/jiangg/projects/machinelearning/TimeRelatedData/SymbolicRegressionGPU/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jiangg/projects/machinelearning/TimeRelatedData/SymbolicRegressionGPUstaticv2/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target

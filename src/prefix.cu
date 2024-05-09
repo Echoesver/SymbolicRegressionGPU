@@ -7,16 +7,20 @@ namespace cusr {
 
         static float constant_prob = 0.2;
 
-        /**
-         * Each seed is initialized by the real random generator engine.
-         * Update the seed after it has been used a given number of times.
-         */
-        static int seed_using_times = 2000;
+        // Using static variables to persist random number generators and distributions
+        static std::mt19937 gen;  
+        static bool is_initialized = false;
 
-        static int seed_count = seed_using_times;
-
-        void set_seed_using_times(int time) {
-            seed_using_times = time;
+        void initialize_random_engine(unsigned seed) {
+            if (!is_initialized || seed != 0) {
+                if (seed == 0) {
+                    std::random_device rd;
+                    gen.seed(rd());
+                } else {
+                    gen.seed(seed);
+                }
+                is_initialized = true;
+            }
         }
 
         void set_constant_prob(float p_const) {
@@ -24,27 +28,15 @@ namespace cusr {
         }
 
         int gen_rand_int(int loBound, int upBound) {
-            if (seed_count-- <= 0) {
-                seed_count = seed_using_times;
-                std::random_device rd;
-                std::mt19937 gen(rd());
-                std::uniform_int_distribution<int> dis(loBound, upBound);
-                srand(dis(gen));
-            }
-            int bound_width = upBound - loBound + 1;
-            return rand() % bound_width + loBound;
+            initialize_random_engine();
+            std::uniform_int_distribution<int> dis(loBound, upBound);
+            return dis(gen);
         }
 
         float gen_rand_float(float loBound, float upBound) {
-            if (seed_count-- <= 0) {
-                seed_count = seed_using_times;
-                std::random_device rd;
-                std::mt19937 gen(rd());
-                std::uniform_int_distribution<int> dis(loBound, upBound);
-                srand(dis(gen));
-            }
-            float rd = loBound + (float) (rand()) / (float) (RAND_MAX / (upBound - loBound));
-            return rd;
+            initialize_random_engine();
+            std::uniform_real_distribution<float> dis(loBound, upBound);
+            return dis(gen);
         }
 
         int get_depth_of_prefix(prefix_t &prefix) {
@@ -191,10 +183,6 @@ namespace cusr {
             return tree_node;
         }
 
-        static bool is_first_rand = true;
-
-#define RETURN_RATE 0.1
-
         TreeNode *
         gen_growth_init_tree(int depth, pair<float, float> &range, vector<Function> &func_set, int variable_num) {
             if (depth == 1) {
@@ -204,17 +192,6 @@ namespace cusr {
             }
 
             float rand_float = gen_rand_float(0, 1);
-
-            if (!is_first_rand) {
-                if (rand_float <= RETURN_RATE) // if return now
-                {
-                    auto *tree_node = new TreeNode();
-                    rand_terminal(tree_node->node, range, variable_num);
-                    return tree_node;
-                }
-            }
-
-            is_first_rand = false;
 
             auto *tree_node = new TreeNode();
             rand_function(tree_node->node, func_set);
@@ -358,7 +335,7 @@ namespace cusr {
                     op_count++;
                 } else if (node.node_type == NodeType::VAR || node.node_type == NodeType::CONST) {
                     num_count++;
-                } else // if (node.node_type == NodeType::UFUNC)
+                } else // if (node.node_type is NodeType::UFUNC)
                 {
                     continue;
                 }

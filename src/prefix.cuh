@@ -68,14 +68,20 @@ namespace cusr {
          * @param upBound
          * @return
          */
+        void initialize_random_engine(unsigned seed = 0);
+        /**
+         * Random integer using std::mt19937 with fixed seed.
+         * @param loBound lower bound
+         * @param upBound upper bound
+         * @return random integer
+         */
         int gen_rand_int(int loBound, int upBound);
 
         /**
-         * random float
-         *
-         * @param loBound
-         * @param upBound
-         * @return
+         * Random float using std::mt19937 with fixed seed.
+         * @param loBound lower bound
+         * @param upBound upper bound
+         * @return random float
          */
         float gen_rand_float(float loBound, float upBound);
 

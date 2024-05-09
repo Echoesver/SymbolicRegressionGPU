@@ -1,4 +1,4 @@
-CMakeFiles/cusr.dir/src/regression.cu.o : /home/jiangg/projects/machinelearning/TimeRelatedData/SymbolicRegressionGPU/src/regression.cu \
+CMakeFiles/cusr.dir/src/regression.cu.o : /home/jiangg/projects/machinelearning/TimeRelatedData/SymbolicRegressionGPUstaticv2/src/regression.cu \
     /usr/include/stdc-predef.h \
     /usr/local/cuda-12.2/targets/x86_64-linux/include/cuda_runtime.h \
     /usr/local/cuda-12.2/targets/x86_64-linux/include/crt/host_config.h \
@@ -158,20 +158,8 @@ CMakeFiles/cusr.dir/src/regression.cu.o : /home/jiangg/projects/machinelearning/
     /usr/include/c++/9/bits/stl_relops.h \
     /usr/include/c++/9/bits/stl_pair.h \
     /usr/include/c++/9/initializer_list \
-    /home/jiangg/projects/machinelearning/TimeRelatedData/SymbolicRegressionGPU/src/regression.cuh \
-    /usr/include/c++/9/sstream \
-    /usr/include/c++/9/istream \
-    /usr/include/c++/9/ios \
-    /usr/include/c++/9/iosfwd \
-    /usr/include/c++/9/bits/stringfwd.h \
-    /usr/include/c++/9/bits/memoryfwd.h \
-    /usr/include/c++/9/bits/postypes.h \
-    /usr/include/c++/9/cwchar \
-    /usr/include/wchar.h \
-    /usr/include/x86_64-linux-gnu/bits/wchar.h \
-    /usr/include/x86_64-linux-gnu/bits/types/wint_t.h \
-    /usr/include/x86_64-linux-gnu/bits/types/mbstate_t.h \
-    /usr/include/c++/9/bits/char_traits.h \
+    /home/jiangg/projects/machinelearning/TimeRelatedData/SymbolicRegressionGPUstaticv2/src/regression.cuh \
+    /usr/include/c++/9/algorithm \
     /usr/include/c++/9/bits/stl_algobase.h \
     /usr/include/c++/9/bits/functexcept.h \
     /usr/include/c++/9/ext/numeric_traits.h \
@@ -182,6 +170,28 @@ CMakeFiles/cusr.dir/src/regression.cu.o : /home/jiangg/projects/machinelearning/
     /usr/include/c++/9/bits/ptr_traits.h \
     /usr/include/c++/9/debug/debug.h \
     /usr/include/c++/9/bits/predefined_ops.h \
+    /usr/include/c++/9/bits/stl_algo.h \
+    /usr/include/c++/9/bits/algorithmfwd.h \
+    /usr/include/c++/9/bits/stl_heap.h \
+    /usr/include/c++/9/bits/stl_tempbuf.h \
+    /usr/include/c++/9/bits/stl_construct.h \
+    /usr/include/c++/9/ext/alloc_traits.h \
+    /usr/include/c++/9/bits/alloc_traits.h \
+    /usr/include/c++/9/bits/memoryfwd.h \
+    /usr/include/c++/9/bits/uniform_int_dist.h \
+    /usr/include/c++/9/limits \
+    /usr/include/c++/9/sstream \
+    /usr/include/c++/9/istream \
+    /usr/include/c++/9/ios \
+    /usr/include/c++/9/iosfwd \
+    /usr/include/c++/9/bits/stringfwd.h \
+    /usr/include/c++/9/bits/postypes.h \
+    /usr/include/c++/9/cwchar \
+    /usr/include/wchar.h \
+    /usr/include/x86_64-linux-gnu/bits/wchar.h \
+    /usr/include/x86_64-linux-gnu/bits/types/wint_t.h \
+    /usr/include/x86_64-linux-gnu/bits/types/mbstate_t.h \
+    /usr/include/c++/9/bits/char_traits.h \
     /usr/include/c++/9/cstdint \
     /usr/lib/gcc/x86_64-linux-gnu/9/include/stdint.h \
     /usr/include/stdint.h \
@@ -215,8 +225,6 @@ CMakeFiles/cusr.dir/src/regression.cu.o : /home/jiangg/projects/machinelearning/
     /usr/include/c++/9/backward/binders.h \
     /usr/include/c++/9/bits/range_access.h \
     /usr/include/c++/9/bits/basic_string.h \
-    /usr/include/c++/9/ext/alloc_traits.h \
-    /usr/include/c++/9/bits/alloc_traits.h \
     /usr/include/c++/9/ext/string_conversions.h \
     /usr/include/c++/9/cstdio \
     /usr/include/c++/9/cerrno \
@@ -249,47 +257,48 @@ CMakeFiles/cusr.dir/src/regression.cu.o : /home/jiangg/projects/machinelearning/
     /usr/include/c++/9/bits/ostream.tcc \
     /usr/include/c++/9/bits/istream.tcc \
     /usr/include/c++/9/bits/sstream.tcc \
-    /home/jiangg/projects/machinelearning/TimeRelatedData/SymbolicRegressionGPU/src/program.cuh \
-    /home/jiangg/projects/machinelearning/TimeRelatedData/SymbolicRegressionGPU/src/prefix.cuh \
+    /usr/include/c++/9/unordered_set \
+    /usr/include/c++/9/ext/aligned_buffer.h \
+    /usr/include/c++/9/bits/hashtable.h \
+    /usr/include/c++/9/bits/hashtable_policy.h \
+    /usr/include/c++/9/tuple \
+    /usr/include/c++/9/array \
+    /usr/include/c++/9/bits/uses_allocator.h \
+    /usr/include/c++/9/bits/invoke.h \
+    /usr/include/c++/9/bits/unordered_set.h \
+    /usr/include/c++/9/bits/erase_if.h \
+    /home/jiangg/projects/machinelearning/TimeRelatedData/SymbolicRegressionGPUstaticv2/src/program.cuh \
+    /home/jiangg/projects/machinelearning/TimeRelatedData/SymbolicRegressionGPUstaticv2/src/prefix.cuh \
     /usr/include/c++/9/stack \
     /usr/include/c++/9/deque \
-    /usr/include/c++/9/bits/stl_construct.h \
     /usr/include/c++/9/bits/stl_uninitialized.h \
     /usr/include/c++/9/bits/stl_deque.h \
     /usr/include/c++/9/bits/deque.tcc \
     /usr/include/c++/9/bits/stl_stack.h \
-    /usr/include/c++/9/bits/uses_allocator.h \
     /usr/include/c++/9/iostream \
     /usr/include/c++/9/random \
-    /usr/include/c++/9/limits \
     /usr/include/c++/9/bits/random.h \
     /usr/include/c++/9/vector \
     /usr/include/c++/9/bits/stl_vector.h \
     /usr/include/c++/9/bits/stl_bvector.h \
     /usr/include/c++/9/bits/vector.tcc \
-    /usr/include/c++/9/bits/uniform_int_dist.h \
     /usr/include/x86_64-linux-gnu/c++/9/bits/opt_random.h \
     /usr/include/c++/9/bits/random.tcc \
     /usr/include/c++/9/numeric \
     /usr/include/c++/9/bits/stl_numeric.h \
     /usr/include/c++/9/memory \
-    /usr/include/c++/9/bits/stl_tempbuf.h \
     /usr/include/c++/9/bits/stl_raw_storage_iter.h \
     /usr/include/c++/9/ext/concurrence.h \
     /usr/include/c++/9/bits/unique_ptr.h \
-    /usr/include/c++/9/tuple \
-    /usr/include/c++/9/array \
-    /usr/include/c++/9/bits/invoke.h \
     /usr/include/c++/9/bits/shared_ptr.h \
     /usr/include/c++/9/bits/shared_ptr_base.h \
     /usr/include/c++/9/bits/allocated_ptr.h \
     /usr/include/c++/9/bits/refwrap.h \
-    /usr/include/c++/9/ext/aligned_buffer.h \
     /usr/include/c++/9/bits/shared_ptr_atomic.h \
     /usr/include/c++/9/bits/atomic_base.h \
     /usr/include/c++/9/bits/atomic_lockfree_defines.h \
     /usr/include/c++/9/backward/auto_ptr.h \
-    /home/jiangg/projects/machinelearning/TimeRelatedData/SymbolicRegressionGPU/src/fit_eval.cuh \
+    /home/jiangg/projects/machinelearning/TimeRelatedData/SymbolicRegressionGPUstaticv2/src/fit_eval.cuh \
     /usr/local/cuda-12.2/targets/x86_64-linux/include/thrust/device_vector.h \
     /usr/local/cuda-12.2/targets/x86_64-linux/include/thrust/detail/config.h \
     /usr/local/cuda-12.2/targets/x86_64-linux/include/thrust/version.h \

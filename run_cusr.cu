@@ -24,6 +24,7 @@ void gen_dataset() {
 int main() {
     gen_dataset();
     cusr::RegressionEngine reg;
+    cusr::program::initialize_random_engine(42); 
 //    reg.function_set = {ADD,  SUB, MUL,DIV,  COS, TAN,SIN };
     reg.function_set = {ADD, SUB, MUL, DIV,POW,SQU,CUB,LOG1P };
     reg.use_gpu = true;            // performing GPU acceleration -- much faster than CPU
