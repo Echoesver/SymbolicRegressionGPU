@@ -11,17 +11,21 @@ namespace cusr {
         static std::mt19937 gen;  
         static bool is_initialized = false;
 
-        void initialize_random_engine(unsigned seed) {
-            if (!is_initialized || seed != 0) {
-                if (seed == 0) {
-                    std::random_device rd;
-                    gen.seed(rd());
-                } else {
-                    gen.seed(seed);
-                }
-                is_initialized = true;
+    void initialize_random_engine(unsigned seed) {
+        if (!is_initialized || seed != 0) {
+            unsigned real_seed;
+            if (seed == 0) {
+                std::random_device rd;
+                real_seed = rd();
+                gen.seed(real_seed);
+            } else {
+                real_seed = seed;
+                gen.seed(real_seed);
             }
+            std::cout << "Random seed used for initialization: " << real_seed << std::endl;
+            is_initialized = true;
         }
+    }
 
         void set_constant_prob(float p_const) {
             constant_prob = p_const;
