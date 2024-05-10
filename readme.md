@@ -98,6 +98,46 @@ void choose_gpu() {
   cin >> gpu_id;
   cudaSetDevice(gpu_id);
 }
+/* **************************************************************************************
+ * If there are multiple GPUs on your device,codes below will choose the 
+ * one with the lowest usage.
+ *************************************************************************************** */
+void choose_gpu_by_usage() {
+    const char* cmd = "nvidia-smi --query-gpu=index,utilization.gpu --format=csv,noheader";
+    std::array<char, 128> buffer;
+    std::string result;
+    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
+    if (!pipe) {
+        throw std::runtime_error("popen() failed!");
+    }
+    while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
+        result += buffer.data();
+    }
+
+    std::istringstream iss(result);
+    std::string line;
+    int best_gpu = -1;
+    int min_usage = 100;  // 100% is max usage, start with highest possible
+    while (std::getline(iss, line)) {
+        std::istringstream lineStream(line);
+        int gpu_index;
+        char comma;
+        int usage;
+        lineStream >> gpu_index >> comma >> usage;
+        if (usage < min_usage) {
+            min_usage = usage;
+            best_gpu = gpu_index;
+        }
+    }
+
+    if (best_gpu == -1) {
+        std::cerr << "No GPU available." << endl;
+        exit(1);
+    }
+    
+    std::cout << "choose GPU device " << best_gpu << "with the lowest usage: " << min_usage << "%" << std::endl;
+    cudaSetDevice(best_gpu);
+}
 ```
 
 
@@ -112,9 +152,11 @@ int main() {
 
   // Create a regression engine.
   cusr::RegressionEngine reg;
-
+  // Use a fixed seed to ensure repeatability. 
+  // Use 0 to use a random seed for calculations.
+  cusr::program::initialize_random_engine(0); 
   // Set arguments.
-  reg.function_set = { _add, _cos, _sub, _div, _tan, _mul, _sin };
+  reg.function_set = { ADD, SUB, MUL, DIV, LOG, INV, EXP, POW, CUB, SQU, LOG1P,SIN,COS,TAN};
   reg.use_gpu = true;            
   reg.max_program_depth = 10;                      
   reg.population_size = 50;
@@ -135,6 +177,9 @@ int main() {
   cout << "Best Fitness  : " << reg.best_program.fitness << endl;
   cout << "Best Program (in prefix):  " << cusr::program::prefix_to_string(reg.best_program.prefix) << endl;
   cout << "Best Program (in infix) :  " << cusr::program::prefix_to_infix(reg.best_program.prefix) << endl;
+  //The RMSE calculation of a new data set can be realized by imitating the following codes.
+  program::calculate_fitness_cpu(&reg.best_program, X_val, y_val, X_val.size(), reg.metric);
+  cout << "Validation set fitness:" << reg.best_program.fitness << endl;  
   
   return 0;
 }
